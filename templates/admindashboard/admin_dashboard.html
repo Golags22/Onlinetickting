@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Events</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style-type: none; /* Remove default bullet points */
+            padding: 0; /* Remove padding */
+        }
+
+        li {
+            border-bottom: 1px solid #ccc;
+            padding: 15px 0;
+            margin-bottom: 10px;
+        }
+
+        li:last-child {
+            border-bottom: none; /* Remove the border for the last item */
+        }
+
+        img {
+            max-width: 100%; /* Make images responsive */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 4px;
+        }
+
+        .event-details {
+            margin-top: 10px;
+        }
+
+        .alert {
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome back 👋{{ user.username }}!</h1>
+    <p>Your Bio: {{ user_profile.bio }}</p></h1>
+    <br><br>
+    <a href="{% url 'create_event' %}">Create New Event</a> 
+
+    <div class="container">
+        <h2>Your Events</h2>
+        <ul>
+            {% for event in events %}  <!-- Loop through events created by the user -->
+            <li>
+                <h3>{{ event.title }}</h3>
+                <p>{{ event.description }}</p>
+                {% if event.poster %}
+                <img src="{{ event.poster.url }}" alt="{{ event.title }}" />  <!-- Assuming 'poster' is an ImageField -->
+                {% else %}
+                <p>No image available</p>
+                {% endif %}
+                <div class="event-details">
+                    <p>Date: {{ event.date }}</p>
+                    <p>Time: {{ event.time }}</p> <!-- Display event details -->
+                    <a href="{% url 'edit_event' event.id %}">Edit</a>  <!-- Link to edit the event -->
+                    <a href="{% url 'delete_event' event.id %}">Delete</a>  <!-- Link to delete the event -->   
+                </div>
+            </li>
+            {% empty %} <!-- Optional: Display a message if no events exist -->
+            <li>
+                <p>No events found.</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>
