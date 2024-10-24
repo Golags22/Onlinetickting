@@ -17,6 +17,7 @@ class UserProfile(models.Model):
     
 # Event Creation
 class Event(models.Model):
+    organizer = models.ForeignKey(User, on_delete=models.CASCADE)  # The user who created the event
     title = models.CharField(max_length=100)                       # Title of the event
     poster = models.ImageField(upload_to='posters/', blank=True, null=True)  # Image field for event poster
     description = models.TextField()                                # Description of the event
