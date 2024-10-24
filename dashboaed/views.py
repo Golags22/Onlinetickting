@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Event
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from datetime import timedelta
+from django.utils import timezone
 
 # Create your views here.
 # HOME PAGE
@@ -15,14 +17,25 @@ def dashboard(request):
     user_profile = request.user.userprofile  # Assuming you've set up a OneToOne relationship
     context = {
         'user_profile': user_profile,
+        
     }
+    
     return render(request, 'accounts/dashboard.html', context=context)
 # AdminDashboard
 @login_required(login_url='login')
 def admin_view(request):
-    events = Event.objects.all()  # Fetch all events
+    user =request.user
+    user_events = Event.objects.filter(organizer=user)  # Filter events by the logged-in user (organizer)
+    
+    # Check if the user is new (joined within the last 7 days)
+    new_user_threshold = timezone.now() - timedelta(days=7)  # Define what 'new' means (e.g., last 7 days)
+    if user.date_joined >= new_user_threshold:
+        welcome_message = "Welcome,"
+    else:
+        welcome_message = "Welcome back!"
     context = {
-        'events': events
+        'welcome_message': welcome_message , # Pass welcome_message to the context
+        'events':user_events # Pass only the events created by the logged-in user
     }
     return render(request, 'admindashboard/admin_dashboard.html', context)
 
@@ -53,7 +66,7 @@ def create_event(request):
             location=location,
             poster=poster
         )
-        event.user = request.user  # Associate the event with the logged-in user
+        event.organizer = request.user    # Set the organizer to the logged-in user
         event.save()  # Save the event to the database
 
         # Show success message

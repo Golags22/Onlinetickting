@@ -72,7 +72,7 @@
 </head>
 <body>
 
-    <h1>Welcome back 👋{{ user.username }}!</h1>
+    <h1>{{ welcome_message }} 👋{{ user.username }}!</h1>
     <p>Your Bio: {{ user_profile.bio }}</p></h1>
     <br><br>
     <a href="{% url 'create_event' %}">Create New Event</a> 
