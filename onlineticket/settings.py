@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&_lpo(sieazj4c1((f^_mq0d6ssn_qpt&meww!9hvqc+r5x#jn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["onlinetickting-kxqrhjx4r-golags22s-projects.vercel.app",
+    "golags22.github.io"]
 
 # Application definition
 
